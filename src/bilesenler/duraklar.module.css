@@ -1,0 +1,234 @@
+/* Pasaport: lacivert kapaklı, altın yazılı */
+.pasaport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 18px 22px;
+  background: var(--lacivert);
+  color: #fff;
+  border: 3px solid var(--lacivert);
+  border-radius: 18px;
+  box-shadow: 6px 6px 0 var(--sari-koyu);
+}
+
+.pasaportBaslik {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pasaportEtiket {
+  font-family: var(--font-cizgi);
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  font-size: 0.8rem;
+  color: var(--sari);
+}
+
+.pasaportSayi {
+  margin: 0;
+  font-family: var(--font-cizgi);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+.pasaportSayi strong {
+  font-size: 1.8rem;
+  color: var(--sari);
+  font-variant-numeric: tabular-nums;
+}
+
+.pasaportNot {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #c9d4f2;
+}
+
+.bayraklar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bayraklar li {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #44599a;
+  background: #2a3d78;
+  position: relative;
+}
+.bayraklar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+.bayraklar li[data-gezildi] {
+  border-color: var(--sari);
+}
+.bayraklar li[data-gezildi] img {
+  filter: none;
+  opacity: 1;
+}
+
+/* Kartpostal ızgarası */
+.izgara {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 28px 24px;
+}
+
+.izgara > li:nth-child(odd) .kart {
+  rotate: -1.2deg;
+}
+.izgara > li:nth-child(even) .kart {
+  rotate: 1deg;
+}
+
+.kart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: var(--lacivert);
+  background: #fff;
+  border: 3px solid var(--lacivert);
+  border-radius: 18px;
+  box-shadow: var(--golge-buyuk);
+  overflow: visible;
+  transition: transform 160ms ease-out, box-shadow 160ms ease-out, rotate 160ms ease-out;
+}
+a.kart:hover {
+  transform: translate(-3px, -4px);
+  rotate: 0deg;
+  box-shadow: 10px 10px 0 var(--lacivert);
+}
+a.kart:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--lacivert);
+}
+a.kart:focus-visible {
+  outline: 4px solid var(--sari);
+  outline-offset: 3px;
+}
+
+.sira {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sari);
+  border: 3px solid var(--lacivert);
+  font-family: var(--font-cizgi);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.resim {
+  position: relative;
+  aspect-ratio: 1.42;
+  border-bottom: 3px solid var(--lacivert);
+  border-radius: 15px 15px 0 0;
+  overflow: hidden;
+  background: var(--gok-acik);
+}
+.resim > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.kart[data-bekliyor] .resim > img {
+  filter: saturate(0.6);
+  opacity: 0.8;
+}
+
+.bant {
+  position: absolute;
+  top: 18px;
+  right: -34px;
+  rotate: 35deg;
+  padding: 4px 40px;
+  background: var(--sari);
+  border-block: 3px solid var(--lacivert);
+  font-family: var(--font-cizgi);
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.damga {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  width: 38%;
+  rotate: -16deg;
+  opacity: 0.92;
+  background: rgb(255 255 255 / 0.55);
+  border-radius: 50%;
+}
+
+.alt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px 14px;
+}
+
+.bayrak {
+  width: 46px;
+  height: 34px;
+  object-fit: cover;
+  border: 2.5px solid var(--lacivert);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.yazi {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+}
+
+.ad {
+  font-family: var(--font-cizgi);
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.baskent {
+  font-family: var(--font-cizgi);
+  font-weight: 500;
+  font-size: 0.98rem;
+  color: var(--lacivert-2);
+}
+
+.ok {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2.5px solid var(--lacivert);
+  background: var(--sari);
+  font-weight: 800;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}

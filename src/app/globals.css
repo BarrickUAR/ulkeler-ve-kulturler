@@ -12,8 +12,23 @@
   --marker: #9a86b8;
   --focus: #1d5a43;
 
+  /* Çizgi film paleti: kapağın gökyüzü, lacivert dış çizgi, güneş sarısı */
+  --gok: #4c97dc;
+  --gok-acik: #a9d6f5;
+  --lacivert: #17295c;
+  --lacivert-2: #2b4a96;
+  --sari: #ffcd2e;
+  --sari-koyu: #e8a800;
+  --kirmizi: #e2403b;
+  --deniz: #86c9f0;
+  --kara: #f7f0d8;
+  --golge: 4px 4px 0 var(--lacivert);
+  --golge-buyuk: 6px 6px 0 var(--lacivert);
+
   --font-el: "Patrick Hand", "Comic Neue", "Segoe Print", cursive;
   --font-okunur: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-kapak: "Shrikhand", "Cooper Black", Georgia, serif;
+  --font-cizgi: "Baloo 2", "Arial Rounded MT Bold", "Segoe UI", sans-serif;
 
   --t-kucuk: 0.875rem;
   --t-govde: 1.0625rem;

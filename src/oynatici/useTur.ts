@@ -23,6 +23,15 @@ export function useTur(ulke: Ulke, kelimeler: Record<string, Kelime[]>) {
   const [kelimeIndeks, setKelimeIndeks] = useState(-1);
   const [sessiz, setSessiz] = useState(false);
   const [serbestMetin, setSerbestMetin] = useState<string | null>(null);
+  /** Anlatılan/dokunulan nesneler (kartlarda işaretlenir). */
+  const [gorulenler, setGorulenler] = useState<ReadonlySet<string>>(() => new Set());
+  const gordu = useCallback((ids: (string | undefined)[]) => {
+    setGorulenler((eski) => {
+      const yeni = new Set(eski);
+      for (const id of ids) if (id && id !== "tum") yeni.add(id);
+      return yeni.size === eski.size ? eski : yeni;
+    });
+  }, []);
 
   const kameraRef = useRef<HTMLDivElement>(null);
   const karakterAlaniRef = useRef<HTMLDivElement>(null);
@@ -123,6 +132,7 @@ export function useTur(ulke: Ulke, kelimeler: Record<string, Kelime[]>) {
 
       await kameraGit(adim.odak);
       if (token.current !== t) return;
+      gordu([adim.odak, ...adim.efektler]);
 
       efektBaslat(adim.efektler);
       if (adim.sahne) {
@@ -152,6 +162,7 @@ export function useTur(ulke: Ulke, kelimeler: Record<string, Kelime[]>) {
             a.oldu = true;
             if (a.odak) void kameraGit(a.odak);
             if (a.efektler) efektBaslat(a.efektler);
+            gordu([a.odak, ...(a.efektler ?? [])]);
           }
         }
         raf.current = requestAnimationFrame(dongu);
@@ -229,6 +240,7 @@ export function useTur(ulke: Ulke, kelimeler: Record<string, Kelime[]>) {
       hepsiniTemizle();
       const oge = ulke.ogeler.find((o) => o.id === id);
       setSerbestMetin(oge?.etiket ?? null);
+      gordu([id]);
       durumYap("duraklatildi");
       adimSuruyor.current = false;
       void kameraGit(id).then(() => efektBaslat([id]));
@@ -259,6 +271,7 @@ export function useTur(ulke: Ulke, kelimeler: Record<string, Kelime[]>) {
     aktifAdim: aktif >= 0 ? adimlar[aktif] : null,
     kelimeIndeks,
     serbestMetin,
+    gorulenler,
     sessiz,
     kameraRef,
     karakterAlaniRef,

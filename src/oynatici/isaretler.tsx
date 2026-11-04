@@ -21,7 +21,7 @@ export function YuvarlakSoru({ className }: { className?: string }) {
 }
 
 /** Arayüz ikonları (lucide çizgisi: 24 grid, 1.75 kalınlık). */
-export function Ikon({ ad }: { ad: "oynat" | "duraklat" | "geri" | "ileri" | "ses" | "sessiz" | "bastan" | "tamekran" }) {
+export function Ikon({ ad }: { ad: "oynat" | "duraklat" | "geri" | "ileri" | "ses" | "sessiz" | "bastan" | "tamekran" | "kapat" }) {
   const yollar: Record<string, React.ReactNode> = {
     oynat: <path d="M7 4.5v15l12.5-7.5L7 4.5Z" fill="currentColor" stroke="none" />,
     duraklat: (
@@ -50,6 +50,12 @@ export function Ikon({ ad }: { ad: "oynat" | "duraklat" | "geri" | "ileri" | "se
       <>
         <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
         <path d="M3 3v5h5" />
+      </>
+    ),
+    kapat: (
+      <>
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
       </>
     ),
     tamekran: (

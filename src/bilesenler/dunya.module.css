@@ -1,0 +1,68 @@
+.harita {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  max-width: 100%;
+  background: var(--deniz);
+}
+
+.taban,
+.ust {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ust a {
+  cursor: pointer;
+}
+.ust a:focus-visible {
+  outline: none;
+}
+.ust a:focus-visible .rozet circle:first-child {
+  stroke: var(--kirmizi);
+  stroke-width: 4;
+}
+
+.etiket text {
+  font-family: var(--font-cizgi);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.durak .rozet,
+.durak .etiket {
+  transition: transform 150ms ease-out;
+}
+.ust a:hover .rozet {
+  transform: scale(1.18);
+}
+
+/* Telefonda harita küçülünce yazılar okunmaz: yalnız bayrak rozetleri kalır, onlar büyür */
+@media (max-width: 640px) {
+  .etiket,
+  .cizgi {
+    display: none;
+  }
+  .rozet {
+    transform: scale(1.7);
+  }
+  .ust a:hover .rozet {
+    transform: scale(1.9);
+  }
+}
+
+.ucakGovde {
+  transform: scale(1.35);
+}
+@media (max-width: 640px) {
+  .ucakGovde {
+    transform: scale(2.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucak {
+    display: none;
+  }
+}

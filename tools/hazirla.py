@@ -162,6 +162,54 @@ def zemin_rengi(poster: np.ndarray) -> str:
     return f"#{r:02x}{g:02x}{b:02x}"
 
 
+def bant_temizle(img: np.ndarray, bant: dict) -> np.ndarray:
+    """Görselin üstüne yapıştırılmış bandı (örn. isim etiketi) kapatır: bölge çevredeki gök rengiyle
+    doldurulur, sonra görseldeki gerçek bir bulut kopyalanıp Poisson karışımıyla yerleştirilir.
+    bant = {"kutu": [x0,y0,x1,y1], "bulut": [x0,y0,x1,y1], "olcek": 1.1}  (hepsi oran)"""
+    h, w = img.shape[:2]
+    x0, y0, x1, y1 = (int(v * (w if i % 2 == 0 else h)) for i, v in enumerate(bant["kutu"]))
+    pay = max(6, int(0.015 * w))
+    dis = np.concatenate([img[y0:y1, max(0, x0 - pay):x0].reshape(-1, 3), img[y0:y1, x1:x1 + pay].reshape(-1, 3),
+                          img[y1:y1 + pay, x0:x1].reshape(-1, 3)]).astype(np.float32)
+    dis_l = dis.mean(axis=1)
+    gok = np.median(dis[dis_l < np.percentile(dis_l, 50)], axis=0)
+    sonuc = img.copy()
+    sonuc[y0:y1, x0:x1] = gok.astype(np.uint8)
+    # kenarı çevreyle kaynaştır
+    kenar = np.zeros((h, w), np.uint8)
+    cv2.rectangle(kenar, (x0 - 3, y0 - 3), (x1 + 3, y1 + 3), 255, 8)
+    sonuc = cv2.inpaint(sonuc, kenar, 5, cv2.INPAINT_TELEA)
+
+    if "bulut" in bant:
+        bx0, by0, bx1, by1 = (int(v * (w if i % 2 == 0 else h)) for i, v in enumerate(bant["bulut"]))
+        kaynak = img[by0:by1, bx0:bx1]
+        olcek = bant.get("olcek", 1.0)
+        kaynak = cv2.resize(kaynak, None, fx=olcek, fy=olcek, interpolation=cv2.INTER_CUBIC)
+        hsv = cv2.cvtColor(kaynak, cv2.COLOR_BGR2HSV)
+        maske = ((hsv[..., 2] > np.percentile(hsv[..., 2], 55)) & (hsv[..., 1] < 70)).astype(np.uint8) * 255
+        maske = cv2.morphologyEx(maske, cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
+        maske = cv2.dilate(maske, np.ones((9, 9), np.uint8))
+        maske[:2], maske[-2:], maske[:, :2], maske[:, -2:] = 0, 0, 0, 0
+        merkez = ((x0 + x1) // 2, max(kaynak.shape[0] // 2 + 2, (y0 + y1) // 2))
+        sonuc = cv2.seamlessClone(kaynak, sonuc, maske, merkez, cv2.NORMAL_CLONE)
+    return sonuc
+
+
+def og_yaz(yol: Path, img: np.ndarray) -> None:
+    """WhatsApp/sosyal önizleme: 1200x630, ortadan kırpılmış JPEG (WebP her yerde desteklenmiyor)."""
+    h, w = img.shape[:2]
+    hedef_oran = 1200 / 630
+    if w / h > hedef_oran:
+        yeni_w = int(h * hedef_oran)
+        x = (w - yeni_w) // 2
+        kirp = img[:, x : x + yeni_w]
+    else:
+        yeni_h = int(w / hedef_oran)
+        y = (h - yeni_h) // 2
+        kirp = img[y : y + yeni_h]
+    yaz(yol, cv2.resize(kirp, (1200, 630), interpolation=cv2.INTER_AREA), [cv2.IMWRITE_JPEG_QUALITY, 85])
+
+
 def webp(yol: Path, img: np.ndarray, genislik: int, kalite: int = 84) -> None:
     h, w = img.shape[:2]
     if w > genislik:
@@ -194,14 +242,26 @@ def isle(slug: str, debug: bool) -> None:
     cv2.fillConvexPoly(poster_m, koseler.astype(np.int32), 255)
 
     dengeli = beyaz_dengesi(img, sayfa, poster_m)
+    # "gizle": [[x0,y0,x1,y1], ...] bölgelerdeki koyu kalem izlerini sil (örn. kapaktaki öğrenci adı)
+    for x0, y0, x1, y1 in elle.get("gizle", []):
+        bolge = dengeli[y0:y1, x0:x1]
+        parlaklik = cv2.cvtColor(bolge, cv2.COLOR_BGR2HSV)[..., 2]
+        iz = (parlaklik < 115).astype(np.uint8) * 255  # kalem izi koyu; gökyüzü ve bulut açık
+        iz = cv2.dilate(iz, np.ones((5, 5), np.uint8))
+        dengeli[y0:y1, x0:x1] = cv2.inpaint(bolge, iz, 7, cv2.INPAINT_TELEA)
     poster = kirp_kenar(duzelt(dengeli, koseler), ek=elle.get("kirp"))
     h, w = poster.shape[:2]
+    for bant in elle.get("bant", []):
+        poster = bant_temizle(poster, bant)
 
     hedef = PUBLIC / slug
-    webp(hedef / "poster-1600.webp", poster, 1600)
+    ad = "kapak" if slug == "kapak" else "poster"
+    webp(hedef / f"{ad}-1600.webp", poster, 1600)
     if w >= 2000:
-        webp(hedef / "poster-2400.webp", poster, 2400)
-    webp(hedef / "sayfa.webp", dengeli, 1200, 80)
+        webp(hedef / f"{ad}-2400.webp", poster, 2400)
+    if slug != "kapak":
+        webp(hedef / "sayfa.webp", dengeli, 1200, 80)
+    og_yaz(hedef / "og.jpg", poster)
 
     CONTENT.joinpath(slug).mkdir(parents=True, exist_ok=True)
     bilgi = {"kaynakGenislik": w, "kaynakYukseklik": h, "oran": round(w / h, 4), "zemin": zemin_rengi(poster),

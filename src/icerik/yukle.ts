@@ -5,19 +5,52 @@ import { Ulke } from "./sema";
 
 const CONTENT = path.join(process.cwd(), "content");
 
-export type KitapSayfasi = { slug: string; ad: string; hazir: boolean };
+type Konum = [number, number];
+
+export type KitapSayfasi = {
+  slug: string;
+  ad: string;
+  kisa: string;
+  iso: string;
+  bayrak: string;
+  baskent: string;
+  konum: Konum;
+  etiket: [number, number];
+  hazir: boolean;
+  /** Poster zemin rengi (hazirla.py ölçer). */
+  renk: string | null;
+  posterVar: boolean;
+};
+
+export type Kitap = {
+  baslik: string;
+  hazirlayan: string;
+  baslangic: { ad: string; iso: string; bayrak: string; konum: Konum };
+  sayfalar: KitapSayfasi[];
+};
 
 function okuJson<T>(dosya: string): T {
   return JSON.parse(fs.readFileSync(dosya, "utf8")) as T;
 }
 
-export function kitap(): { baslik: string; hazirlayan: string; sayfalar: KitapSayfasi[] } {
-  const k = okuJson<{ baslik: string; sayfalar: { slug: string; ad: string }[] }>(path.join(CONTENT, "kitap.json"));
+export function kitap(): Kitap {
+  const k = okuJson<Omit<Kitap, "hazirlayan" | "sayfalar"> & { sayfalar: Omit<KitapSayfasi, "hazir" | "renk" | "posterVar">[] }>(
+    path.join(CONTENT, "kitap.json"),
+  );
   const ayar = okuJson<{ hazirlayan?: string }>(path.join(CONTENT, "ayarlar.json"));
   return {
     baslik: k.baslik,
     hazirlayan: ayar.hazirlayan ?? "",
-    sayfalar: k.sayfalar.map((s) => ({ ...s, hazir: fs.existsSync(path.join(CONTENT, s.slug, "ulke.json")) })),
+    baslangic: k.baslangic,
+    sayfalar: k.sayfalar.map((s) => {
+      const posterBilgi = path.join(CONTENT, s.slug, "_poster.json");
+      return {
+        ...s,
+        hazir: fs.existsSync(path.join(CONTENT, s.slug, "ulke.json")),
+        renk: fs.existsSync(posterBilgi) ? okuJson<{ zemin: string }>(posterBilgi).zemin : null,
+        posterVar: fs.existsSync(path.join(process.cwd(), "public", "img", s.slug, "poster-1600.webp")),
+      };
+    }),
   };
 }
 
