@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.vercel/
+tools/.venv/
+tools/__pycache__/
+.env*
+raw/_debug/
+tools/_dene.py
+
+# Kapak fotoğrafında öğrencinin tam adı var, depoya girmesin
+raw/kapak.jpg

@@ -1,0 +1,429 @@
+/* Telefon (dikey) önce: başlık, poster, altyazı, kontrol, sonra defterdeki yazılar.
+   900px üstünde kitapçık sayfası gibi iki sütun: solda poster, sağda yazılar. */
+
+.kok {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+.ust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--rule);
+  max-width: 1360px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.geriLink {
+  font-size: var(--t-kucuk);
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--graphite-soft);
+  padding: 10px 4px;
+}
+.geriLink:hover {
+  color: var(--graphite);
+}
+
+.ulkeSec select {
+  font: inherit;
+  font-size: var(--t-kucuk);
+  font-weight: 600;
+  color: var(--graphite);
+  background: var(--paper);
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  padding: 8px 30px 8px 12px;
+  min-height: 40px;
+}
+
+.sayfa {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  max-width: 1360px;
+  width: 100%;
+  margin-inline: auto;
+  padding-block: 20px 32px;
+  flex: 1;
+}
+
+.sol {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Defterdeki dış çizgili markör başlık */
+.baslik {
+  margin: 0;
+  font-family: var(--font-el);
+  font-weight: 400;
+  font-size: var(--t-baslik);
+  line-height: 1;
+  letter-spacing: 0.07em;
+  color: var(--marker);
+  -webkit-text-stroke: 0.035em color-mix(in oklab, var(--marker), #000 42%);
+  paint-order: stroke fill;
+  text-wrap: balance;
+}
+
+.sahne {
+  position: relative;
+  aspect-ratio: var(--oran);
+  max-width: 100%;
+  overflow: hidden;
+  background: var(--country);
+  border: 2px solid color-mix(in oklab, var(--country), #000 25%);
+  border-radius: 4px;
+  container-type: inline-size;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.kamera {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.poster {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.katman {
+  position: absolute;
+  pointer-events: none;
+}
+.katman > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.karakterAlani {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Dokunulabilir nesne alanları: görünmez, yalnız odakta ve seçiliyken ince çerçeve */
+.nokta {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+.nokta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 4px var(--graphite);
+}
+
+/* Parçacıklar (efektler.ts ekler) */
+.katman :global(.nota) {
+  position: absolute;
+  font-family: var(--font-el);
+  font-size: 4.2cqw;
+  line-height: 1;
+  color: #1b1a17;
+  opacity: 0;
+}
+.katman :global(.buhar) {
+  position: absolute;
+  width: 12%;
+  height: 40%;
+  opacity: 0;
+  background: no-repeat center / contain
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 60'%3E%3Cpath d='M10 58c-6-8 6-14 0-22s6-14 0-22S10 4 10 2' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+.katman :global(.fener) {
+  position: absolute;
+  width: 220%;
+  height: 26%;
+  transform-origin: 0% 50%;
+  opacity: 0;
+  background: #fff6b8;
+  clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 55%);
+}
+:global(.karakter) {
+  position: absolute;
+}
+:global(.karakter) img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.altyazi {
+  min-height: 4.2em;
+  display: flex;
+  align-items: center;
+}
+.altyaziMetin,
+.altyaziBos {
+  margin: 0;
+  font-size: var(--t-altyazi);
+  line-height: 1.45;
+  font-weight: 500;
+  text-wrap: pretty;
+}
+.altyaziBos {
+  font-size: var(--t-govde);
+  color: var(--graphite-soft);
+  font-weight: 400;
+}
+.altyaziMetin span {
+  color: var(--graphite-soft);
+  transition: color 120ms ease-out;
+}
+.altyaziMetin span[data-durum="gecti"] {
+  color: var(--graphite);
+}
+/* Fosforlu kalem: o an okunan kelime */
+.altyaziMetin span[data-durum="simdi"] {
+  color: var(--graphite);
+  background: linear-gradient(transparent 52%, color-mix(in oklab, var(--marker), transparent 45%) 52%, color-mix(in oklab, var(--marker), transparent 45%) 92%, transparent 92%);
+}
+
+.kontrol {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ana {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 18px 0 14px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: #fff;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ana:hover {
+  background: color-mix(in oklab, var(--ink), #000 15%);
+}
+.ana:active {
+  transform: translateY(1px);
+}
+
+.adimlar {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sayac {
+  min-width: 3.4em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--graphite-soft);
+}
+
+.ikonBtn {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--graphite);
+  cursor: pointer;
+}
+.ikonBtn:hover:not(:disabled) {
+  border-color: var(--graphite-soft);
+}
+.ikonBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.sesBtn {
+  margin-left: auto;
+}
+.tamEkranBtn {
+  display: none;
+}
+@media (min-width: 900px) {
+  .sesBtn {
+    margin-left: 0;
+  }
+  .tamEkranBtn {
+    display: inline-grid;
+    margin-left: auto;
+  }
+}
+
+/* Sağ sütun: defterdeki yazılar, el yazısı ve yeşil mürekkep */
+.sag {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+  font-family: var(--font-el);
+  font-size: var(--t-el);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.kimlik {
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+.kimlik > div {
+  display: flex;
+  gap: 0.35em;
+}
+.kimlik dt::after {
+  content: ":";
+}
+.kimlik dd {
+  margin: 0;
+}
+
+.metin,
+.bilgi {
+  margin: 0;
+  max-width: 62ch;
+}
+
+.yildiz {
+  width: 1.05em;
+  height: 1.05em;
+  vertical-align: -0.12em;
+  margin-right: 0.3em;
+}
+
+.bilgi {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5em;
+  align-items: start;
+}
+.bilgi p {
+  margin: 0;
+}
+.soru {
+  width: 1.9em;
+  height: 1.9em;
+  margin-top: -0.15em;
+}
+
+/* O an okunan blok: kenarda markör çizgisi */
+.kimlik,
+.metin,
+.bilgi {
+  padding-left: 12px;
+  border-left: 3px solid transparent;
+  transition: border-color 180ms ease-out;
+}
+.kimlik[data-aktif],
+.metin[data-aktif],
+.bilgi[data-aktif] {
+  border-left-color: var(--marker);
+}
+
+.baglanti {
+  align-self: flex-start;
+  font-family: var(--font-okunur);
+  font-size: var(--t-kucuk);
+  font-weight: 600;
+  color: var(--graphite);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  padding-block: 6px;
+}
+
+.alt {
+  max-width: 1360px;
+  width: 100%;
+  margin-inline: auto;
+  border-top: 1px solid var(--rule);
+  padding-block: 14px calc(20px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sayfaCevir {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.sayfaCevir a {
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 4px;
+  color: var(--graphite);
+}
+.sayfaCevir a:hover {
+  text-decoration: underline;
+}
+
+.imza {
+  margin: 0;
+  font-size: var(--t-kucuk);
+  color: var(--graphite-soft);
+}
+
+@media (min-width: 900px) {
+  .sayfa {
+    grid-template-columns: minmax(0, 62fr) minmax(0, 38fr);
+    gap: 40px;
+    padding-block: 28px 40px;
+  }
+  .sag {
+    padding-top: calc(var(--t-baslik) + 12px);
+  }
+}
+
+/* Tahta / tam ekran sunum: sahne ekrana sığar, altyazı büyür */
+.sol:fullscreen {
+  background: var(--paper);
+  padding: 24px 40px;
+  justify-content: center;
+}
+.sol:fullscreen .sahne {
+  max-height: 72vh;
+  width: auto;
+  align-self: center;
+}
+.sol:fullscreen .altyaziMetin {
+  font-size: 2rem;
+  text-align: center;
+}
+.sol:fullscreen .altyazi {
+  justify-content: center;
+}
+.sol:fullscreen .kontrol {
+  justify-content: center;
+}

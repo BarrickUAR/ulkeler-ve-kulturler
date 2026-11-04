@@ -1,0 +1,83 @@
+/* Kitapçığın dijital devamı: spiral defter kâğıdı, yeşil ince uçlu kalem, markör başlıklar.
+   Ülkeye özel --country ve --marker sayfada satır içi tanımlanır. Bilerek tek (açık) tema. */
+:root {
+  --paper: #f6f7f3;
+  --paper-2: #eceee8;
+  --rule: #d7dbd2;
+  --ink: #1d5a43; /* Burçe'nin kaleminin yeşili */
+  --ink-soft: #4d6e60;
+  --graphite: #262a28;
+  --graphite-soft: #5b615d;
+  --country: #3b4f7a;
+  --marker: #9a86b8;
+  --focus: #1d5a43;
+
+  --font-el: "Patrick Hand", "Comic Neue", "Segoe Print", cursive;
+  --font-okunur: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+
+  --t-kucuk: 0.875rem;
+  --t-govde: 1.0625rem;
+  --t-el: 1.3rem;
+  --t-altyazi: 1.25rem;
+  --t-baslik: clamp(2.1rem, 6vw, 3.4rem);
+
+  --ease-kamera: cubic-bezier(0.33, 0, 0.2, 1);
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--graphite);
+  font-family: var(--font-okunur);
+  font-size: var(--t-govde);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.gorunmez {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

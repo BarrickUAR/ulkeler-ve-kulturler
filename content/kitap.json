@@ -1,0 +1,14 @@
+{
+  "baslik": "Ülkeler ve Kültürler",
+  "sayfalar": [
+    { "slug": "abd", "ad": "Amerika (ABD)" },
+    { "slug": "brezilya", "ad": "Brezilya" },
+    { "slug": "birlesik-krallik", "ad": "Birleşik Krallık" },
+    { "slug": "cekya", "ad": "Çekya" },
+    { "slug": "cin", "ad": "Çin" },
+    { "slug": "fiji", "ad": "Fiji" },
+    { "slug": "fransa", "ad": "Fransa" },
+    { "slug": "guney-afrika", "ad": "Güney Afrika" },
+    { "slug": "guney-kore", "ad": "Güney Kore" }
+  ]
+}
