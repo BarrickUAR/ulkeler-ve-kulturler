@@ -47,6 +47,8 @@ export const Adim = z.object({
   efektler: z.array(z.string()).default([]),
   ara: z.array(Ara).default([]),
   sahne: z.enum(["futbolcu-atis", "leonardo-boyar"]).optional(),
+  /** Okuyacak rehber (yoksa tools/tts.py kuralı seçer). */
+  ses: z.enum(["kadin", "erkek"]).optional(),
   /** Yan sütunda vurgulanacak blok. */
   bolum: z.enum(["kimlik", "metin", "bilgi"]).optional(),
 });
@@ -72,3 +74,6 @@ export const Ulke = z.object({
 export type Ulke = z.infer<typeof Ulke>;
 
 export type Kelime = { w: string; t: number; d: number };
+
+/** Adımı okuyan rehber (altyazıdaki rozet). */
+export type Rehber = { tur: "kadin" | "erkek"; ad: string };

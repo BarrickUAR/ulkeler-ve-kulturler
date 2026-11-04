@@ -3,6 +3,7 @@ import DunyaRotasi from "@/bilesenler/DunyaRotasi";
 import { DurakKartlari, Pasaport, type DurakKarti } from "@/bilesenler/Duraklar";
 import { Bulut } from "@/bilesenler/Bulut";
 import { kitap } from "@/icerik/yukle";
+import { SayfaHazir } from "@/ucus/SayfaHazir";
 import s from "./kitapcik.module.css";
 
 export default function Kitapcik() {
@@ -19,6 +20,7 @@ export default function Kitapcik() {
 
   return (
     <div className={s.kok}>
+      <SayfaHazir />
       {/* ——— Kapak ——— */}
       <header className={s.kapak}>
         <Bulut className={`${s.bulut} ${s.b1}`} />

@@ -11,6 +11,8 @@ export type KitapSayfasi = {
   slug: string;
   ad: string;
   kisa: string;
+  /** Yönelme hâli: "ABD'ye", "Çin'e" (uçuş ekranı için). */
+  gidis: string;
   iso: string;
   bayrak: string;
   baskent: string;

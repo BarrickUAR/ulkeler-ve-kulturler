@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Atkinson_Hyperlegible_Next, Baloo_2, Patrick_Hand, Shrikhand } from "next/font/google";
+import { kitap } from "@/icerik/yukle";
+import UcusGecisi from "@/ucus/UcusGecisi";
 import "./globals.css";
 
 const el = Patrick_Hand({ weight: "400", subsets: ["latin", "latin-ext"], variable: "--font-el", display: "swap" });
@@ -23,7 +25,11 @@ export const viewport: Viewport = { themeColor: "#f6f7f3", colorScheme: "light" 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr" className={`${el.variable} ${okunur.variable} ${kapak.variable} ${cizgi.variable}`}>
-      <body>{children}</body>
+      <body>
+        <UcusGecisi hedefler={kitap().sayfalar.filter((s) => s.hazir).map(({ slug, ad, gidis, bayrak }) => ({ slug, ad, gidis, bayrak }))}>
+          {children}
+        </UcusGecisi>
+      </body>
     </html>
   );
 }

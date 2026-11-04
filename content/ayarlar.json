@@ -1,4 +1,17 @@
 {
-  "tts": { "ses": "tr-TR-EmelNeural", "hiz": "-8%" },
+  "tts": {
+    "hiz": "-8%",
+    "anlaticilar": {
+      "kadin": {
+        "ses": "tr-TR-EmelNeural",
+        "ad": "Ece"
+      },
+      "erkek": {
+        "ses": "tr-TR-AhmetNeural",
+        "ad": "Can"
+      }
+    },
+    "_kural": "İki rehber sohbet eder gibi anlatır. Tek sıradaki ülkelerde (1, 3, 5...) Ece, çift sıradakilerde Can başlar. Başlayan rehber ülke kimliğini ve Burçe'nin metnini okur; haritadaki nesnelerde iki rehber sırayla konuşur (önce diğeri); 'Biliyor muydun?' diğer rehberindir. Bir adımda \"ses\": \"kadin\" | \"erkek\" yazılırsa o geçerli olur."
+  },
   "hazirlayan": "Burçe"
 }

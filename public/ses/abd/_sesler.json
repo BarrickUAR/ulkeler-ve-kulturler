@@ -1,0 +1,15 @@
+{
+ "01-giris": "kadin",
+ "02-eyalet": "kadin",
+ "03-ozgurluk": "kadin",
+ "04-gezi": "kadin",
+ "05-yemek": "kadin",
+ "06-futbol": "erkek",
+ "07-caz": "kadin",
+ "08-kartal": "erkek",
+ "09-kovboy": "kadin",
+ "10-golden": "erkek",
+ "11-alamo": "kadin",
+ "12-monument": "erkek",
+ "13-biliyor": "erkek"
+}

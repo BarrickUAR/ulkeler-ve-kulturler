@@ -4,8 +4,12 @@ Kullanım:
   tools/.venv/Scripts/python.exe tools/tts.py            # tüm ülkeler, sadece değişen adımlar
   tools/.venv/Scripts/python.exe tools/tts.py abd        # tek ülke
   tools/.venv/Scripts/python.exe tools/tts.py --ornek    # iki sesten örnek (public/ses/_ornek)
-Ayar: content/ayarlar.json -> {"ses": "tr-TR-EmelNeural", "hiz": "-8%"}
-Çıktı: public/ses/<slug>/<adimId>.mp3 ve <adimId>.json ([{ "w": kelime, "t": ms, "d": ms }])
+Ayar: content/ayarlar.json -> tts.anlaticilar (kadin/erkek), tts.hiz
+İki rehber sırayla anlatır (kural ayarlar.json içinde): ülkenin sırası tekse kadın, çiftse erkek başlar;
+başlayan kimlik ve metin adımlarını okur, nesne adımlarında iki rehber sırayla konuşur, "Biliyor muydun?"
+diğer rehberindir. Adımdaki "ses" alanı önceliklidir.
+Çıktı: public/ses/<slug>/<adimId>.mp3, <adimId>.json ([{ "w": kelime, "t": ms, "d": ms }])
+       public/ses/<slug>/_sesler.json ({ adimId: "kadin" | "erkek" })
 """
 from __future__ import annotations
 
@@ -24,10 +28,31 @@ SES = KOK / "public" / "ses"
 
 def ayarlar() -> dict:
     p = CONTENT / "ayarlar.json"
-    d = {"ses": "tr-TR-EmelNeural", "hiz": "-8%"}
+    d = {"hiz": "-8%", "anlaticilar": {"kadin": {"ses": "tr-TR-EmelNeural"}, "erkek": {"ses": "tr-TR-AhmetNeural"}}}
     if p.exists():
         d.update(json.loads(p.read_text(encoding="utf-8")).get("tts", {}))
     return d
+
+
+def anlaticilar(veri: dict) -> dict[str, str]:
+    """Her adımı okuyacak rehber ({adimId: "kadin" | "erkek"}).
+    Başlayan rehber kimlik + Burçe'nin metnini okur; nesne adımlarında iki rehber sohbet eder gibi
+    sırayla konuşur (önce diğeri); "Biliyor muydun?" diğer rehberindir. Adımdaki "ses" önceliklidir."""
+    bas = "kadin" if veri.get("sira", 1) % 2 == 1 else "erkek"
+    diger = "erkek" if bas == "kadin" else "kadin"
+    sonuc: dict[str, str] = {}
+    sayac = 0
+    for adim in veri["adimlar"]:
+        if adim.get("ses") in ("kadin", "erkek"):
+            sonuc[adim["id"]] = adim["ses"]
+        elif adim.get("bolum") in ("kimlik", "metin"):
+            sonuc[adim["id"]] = bas
+        elif adim.get("bolum") == "bilgi":
+            sonuc[adim["id"]] = diger
+        else:
+            sonuc[adim["id"]] = diger if sayac % 2 == 0 else bas
+            sayac += 1
+    return sonuc
 
 
 async def uret(metin: str, ses: str, hiz: str, mp3: Path) -> list[dict]:
@@ -49,16 +74,19 @@ async def ulke(slug: str, ayar: dict) -> None:
     hash_dosya = hedef / "_hash.json"
     eski = json.loads(hash_dosya.read_text(encoding="utf-8")) if hash_dosya.exists() else {}
     yeni = {}
+    sesler = anlaticilar(veri)
     for adim in veri["adimlar"]:
         metin = adim.get("okunus") or adim["metin"]
-        h = hashlib.sha1(f"{ayar['ses']}|{ayar['hiz']}|{metin}".encode()).hexdigest()[:12]
+        kim = sesler[adim["id"]]
+        ses = ayar["anlaticilar"][kim]["ses"]
+        h = hashlib.sha1(f"{ses}|{ayar['hiz']}|{metin}".encode()).hexdigest()[:12]
         yeni[adim["id"]] = h
         mp3 = hedef / f"{adim['id']}.mp3"
         if eski.get(adim["id"]) == h and mp3.exists():
             continue
         for deneme in range(3):
             try:
-                kelimeler = await uret(metin, ayar["ses"], ayar["hiz"], mp3)
+                kelimeler = await uret(metin, ses, ayar["hiz"], mp3)
                 break
             except Exception as e:  # ağ hatası olabilir
                 if deneme == 2:
@@ -66,8 +94,9 @@ async def ulke(slug: str, ayar: dict) -> None:
                 print(f"  tekrar ({e})")
                 await asyncio.sleep(2)
         (hedef / f"{adim['id']}.json").write_text(json.dumps(kelimeler, ensure_ascii=False), encoding="utf-8")
-        print(f"{slug}/{adim['id']}: {len(kelimeler)} kelime")
+        print(f"{slug}/{adim['id']}: {kim}, {len(kelimeler)} kelime")
     hash_dosya.write_text(json.dumps(yeni, indent=1), encoding="utf-8")
+    (hedef / "_sesler.json").write_text(json.dumps(sesler, indent=1), encoding="utf-8")
 
 
 async def ornek() -> None:

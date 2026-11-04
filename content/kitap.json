@@ -1,15 +1,167 @@
 {
   "baslik": "Ülkeler ve Kültürler",
-  "baslangic": { "ad": "Türkiye", "iso": "792", "bayrak": "tr", "konum": [35, 39] },
+  "baslangic": {
+    "ad": "Türkiye",
+    "iso": "792",
+    "bayrak": "tr",
+    "konum": [
+      35,
+      39
+    ]
+  },
   "sayfalar": [
-    { "slug": "abd", "ad": "Amerika (ABD)", "kisa": "ABD", "iso": "840", "bayrak": "us", "baskent": "Washington", "konum": [-98, 39], "etiket": [0, -34] },
-    { "slug": "brezilya", "ad": "Brezilya", "kisa": "Brezilya", "iso": "076", "bayrak": "br", "baskent": "Brasilia", "konum": [-52, -10], "etiket": [0, 30] },
-    { "slug": "birlesik-krallik", "ad": "Birleşik Krallık", "kisa": "Birleşik Krallık", "iso": "826", "bayrak": "gb", "baskent": "Londra", "konum": [-2, 53.5], "etiket": [-72, -38] },
-    { "slug": "cekya", "ad": "Çekya", "kisa": "Çekya", "iso": "203", "bayrak": "cz", "baskent": "Prag", "konum": [15.5, 49.8], "etiket": [34, -56] },
-    { "slug": "cin", "ad": "Çin", "kisa": "Çin", "iso": "156", "bayrak": "cn", "baskent": "Pekin", "konum": [104, 35], "etiket": [0, -34] },
-    { "slug": "fiji", "ad": "Fiji", "kisa": "Fiji", "iso": "242", "bayrak": "fj", "baskent": "Suva", "konum": [178, -17.8], "etiket": [-30, 34] },
-    { "slug": "fransa", "ad": "Fransa", "kisa": "Fransa", "iso": "250", "bayrak": "fr", "baskent": "Paris", "konum": [2.5, 46.5], "etiket": [-64, 28] },
-    { "slug": "guney-afrika", "ad": "Güney Afrika", "kisa": "Güney Afrika", "iso": "710", "bayrak": "za", "baskent": "Pretorya", "konum": [24, -29], "etiket": [0, 32] },
-    { "slug": "guney-kore", "ad": "Güney Kore", "kisa": "Güney Kore", "iso": "410", "bayrak": "kr", "baskent": "Seul", "konum": [127.8, 36.3], "etiket": [40, 26] }
+    {
+      "slug": "abd",
+      "ad": "Amerika (ABD)",
+      "kisa": "ABD",
+      "iso": "840",
+      "bayrak": "us",
+      "baskent": "Washington",
+      "konum": [
+        -98,
+        39
+      ],
+      "etiket": [
+        0,
+        -34
+      ],
+      "gidis": "ABD'ye"
+    },
+    {
+      "slug": "brezilya",
+      "ad": "Brezilya",
+      "kisa": "Brezilya",
+      "iso": "076",
+      "bayrak": "br",
+      "baskent": "Brasilia",
+      "konum": [
+        -52,
+        -10
+      ],
+      "etiket": [
+        0,
+        30
+      ],
+      "gidis": "Brezilya'ya"
+    },
+    {
+      "slug": "birlesik-krallik",
+      "ad": "Birleşik Krallık",
+      "kisa": "Birleşik Krallık",
+      "iso": "826",
+      "bayrak": "gb",
+      "baskent": "Londra",
+      "konum": [
+        -2,
+        53.5
+      ],
+      "etiket": [
+        -72,
+        -38
+      ],
+      "gidis": "Birleşik Krallık'a"
+    },
+    {
+      "slug": "cekya",
+      "ad": "Çekya",
+      "kisa": "Çekya",
+      "iso": "203",
+      "bayrak": "cz",
+      "baskent": "Prag",
+      "konum": [
+        15.5,
+        49.8
+      ],
+      "etiket": [
+        34,
+        -56
+      ],
+      "gidis": "Çekya'ya"
+    },
+    {
+      "slug": "cin",
+      "ad": "Çin",
+      "kisa": "Çin",
+      "iso": "156",
+      "bayrak": "cn",
+      "baskent": "Pekin",
+      "konum": [
+        104,
+        35
+      ],
+      "etiket": [
+        0,
+        -34
+      ],
+      "gidis": "Çin'e"
+    },
+    {
+      "slug": "fiji",
+      "ad": "Fiji",
+      "kisa": "Fiji",
+      "iso": "242",
+      "bayrak": "fj",
+      "baskent": "Suva",
+      "konum": [
+        178,
+        -17.8
+      ],
+      "etiket": [
+        -30,
+        34
+      ],
+      "gidis": "Fiji'ye"
+    },
+    {
+      "slug": "fransa",
+      "ad": "Fransa",
+      "kisa": "Fransa",
+      "iso": "250",
+      "bayrak": "fr",
+      "baskent": "Paris",
+      "konum": [
+        2.5,
+        46.5
+      ],
+      "etiket": [
+        -64,
+        28
+      ],
+      "gidis": "Fransa'ya"
+    },
+    {
+      "slug": "guney-afrika",
+      "ad": "Güney Afrika",
+      "kisa": "Güney Afrika",
+      "iso": "710",
+      "bayrak": "za",
+      "baskent": "Pretorya",
+      "konum": [
+        24,
+        -29
+      ],
+      "etiket": [
+        0,
+        32
+      ],
+      "gidis": "Güney Afrika'ya"
+    },
+    {
+      "slug": "guney-kore",
+      "ad": "Güney Kore",
+      "kisa": "Güney Kore",
+      "iso": "410",
+      "bayrak": "kr",
+      "baskent": "Seul",
+      "konum": [
+        127.8,
+        36.3
+      ],
+      "etiket": [
+        40,
+        26
+      ],
+      "gidis": "Güney Kore'ye"
+    }
   ]
 }

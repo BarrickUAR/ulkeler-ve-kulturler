@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { Damga } from "@/bilesenler/Damga";
 import type { KonumKarti } from "@/icerik/dunya";
 import { damgala } from "@/icerik/pasaport";
-import type { Kelime, Oge, Ulke } from "@/icerik/sema";
+import { sayfaHazir, ucarakGit } from "@/ucus/UcusGecisi";
+import type { Kelime, Oge, Rehber, Ulke } from "@/icerik/sema";
 import { Ikon, Yildiz, YuvarlakSoru } from "./isaretler";
 import { useTur } from "./useTur";
 import s from "./ulke.module.css";
@@ -15,6 +16,7 @@ export type Komsu = { slug: string; ad: string; bayrak: string; sira: number } |
 type Props = {
   ulke: Ulke;
   kelimeler: Record<string, Kelime[]>;
+  rehberler: Record<string, Rehber>;
   sira: number;
   toplam: number;
   bayrak: string;
@@ -38,6 +40,18 @@ export default function UlkeSayfasi(p: Props) {
   /** Sunum modu: tahtada/telefonda harita ekranı kaplar (tam ekran API'si olmayan iPhone'da da çalışır). */
   const [sunum, setSunum] = useState(false);
   const sunumRef = useRef<HTMLDivElement>(null);
+  const posterRef = useRef<HTMLImageElement>(null);
+
+  // Uçuş perdesine "sayfa hazır" de: poster yüklenince (önbellekteyse hemen)
+  useEffect(() => {
+    const img = posterRef.current;
+    if (!img || img.complete) {
+      sayfaHazir();
+      return;
+    }
+    img.addEventListener("load", sayfaHazir, { once: true });
+    img.addEventListener("error", sayfaHazir, { once: true });
+  }, []);
 
   useEffect(() => {
     if (durum !== "hazir") setIpucu(false);
@@ -113,9 +127,7 @@ export default function UlkeSayfasi(p: Props) {
             <select
               id="ulke-sec"
               value={ulke.slug}
-              onChange={(e) => {
-                location.href = `/${e.target.value}`;
-              }}
+              onChange={(e) => ucarakGit(`/${e.target.value}`)}
             >
               {p.digerleri.map((d) => (
                 <option key={d.slug} value={d.slug}>
@@ -141,6 +153,7 @@ export default function UlkeSayfasi(p: Props) {
             <div className={s.sahne} aria-label={`${ulke.ad} haritası`}>
               <div className={s.kamera} ref={tur.kameraRef}>
                 <img
+                  ref={posterRef}
                   className={s.poster}
                   src={`/img/${ulke.slug}/poster-1600.webp`}
                   alt={`${ulke.ad} haritası: ${ulke.ogeler.map((o) => o.etiket).join(", ")}`}
@@ -198,7 +211,15 @@ export default function UlkeSayfasi(p: Props) {
             {serbestMetin ? (
               <p className={s.altyaziMetin}>{serbestMetin}</p>
             ) : aktifAdim ? (
-              <Altyazi metin={aktifAdim.metin} sozluSayi={(kelimeler[aktifAdim.id] ?? []).length} indeks={kelimeIndeks} />
+              <>
+                {p.rehberler[aktifAdim.id] && (
+                  <span className={s.rehber} data-tur={p.rehberler[aktifAdim.id].tur} key={aktifAdim.id}>
+                    <RehberYuz tur={p.rehberler[aktifAdim.id].tur} />
+                    {p.rehberler[aktifAdim.id].ad}
+                  </span>
+                )}
+                <Altyazi metin={aktifAdim.metin} sozluSayi={(kelimeler[aktifAdim.id] ?? []).length} indeks={kelimeIndeks} />
+              </>
             ) : (
               <p className={s.altyaziBos}>{ipucu ? "Dinle'ye bas ya da resimdeki bir şeye dokun." : ""}</p>
             )}
@@ -377,6 +398,30 @@ function SayfaKarti({ k, yon }: { k: NonNullable<Komsu>; yon: "onceki" | "sonrak
         </span>
       </span>
     </Link>
+  );
+}
+
+/** Rehberlerin küçük çizgi film yüzü (kız: iki örgü, erkek: kısa saç). */
+function RehberYuz({ tur }: { tur: "kadin" | "erkek" }) {
+  return (
+    <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+      {tur === "kadin" ? (
+        <>
+          <circle cx="6" cy="20" r="4.5" fill="#6b3b1f" stroke="#17295c" strokeWidth="1.6" />
+          <circle cx="26" cy="20" r="4.5" fill="#6b3b1f" stroke="#17295c" strokeWidth="1.6" />
+          <circle cx="16" cy="17" r="10.5" fill="#f6c9a0" stroke="#17295c" strokeWidth="1.8" />
+          <path d="M5.8 15.5C6.5 8.5 11 5.5 16 5.5s9.5 3 10.2 10c-3.5-1-7-3.5-8.6-6.4C16 12 11 14.8 5.8 15.5Z" fill="#6b3b1f" stroke="#17295c" strokeWidth="1.6" strokeLinejoin="round" />
+        </>
+      ) : (
+        <>
+          <circle cx="16" cy="17" r="10.5" fill="#e8b48a" stroke="#17295c" strokeWidth="1.8" />
+          <path d="M5.6 15C5.6 8.6 10.4 5.4 16 5.4s10.4 3 10.4 9.6c-2.6-2.4-6-3.4-10.4-3.4S8.4 12.4 5.6 15Z" fill="#2b1d14" stroke="#17295c" strokeWidth="1.6" strokeLinejoin="round" />
+        </>
+      )}
+      <circle cx="12.2" cy="18" r="1.5" fill="#17295c" />
+      <circle cx="19.8" cy="18" r="1.5" fill="#17295c" />
+      <path d="M12.5 22.3c1.9 1.8 5.1 1.8 7 0" fill="none" stroke="#17295c" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
   );
 }
 

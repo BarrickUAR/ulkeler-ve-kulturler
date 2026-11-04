@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
-import type { Kelime } from "@/icerik/sema";
+import type { Kelime, Rehber } from "@/icerik/sema";
 import { konumKarti } from "@/icerik/dunya";
 import { hazirUlkeler, kitap, ulke as ulkeYukle } from "@/icerik/yukle";
 import UlkeSayfasi, { type Komsu } from "@/oynatici/UlkeSayfasi";
@@ -34,6 +34,20 @@ function kelimeleriOku(slug: string, adimIdler: string[]): Record<string, Kelime
   return sonuc;
 }
 
+/** tools/tts.py'nin yazdığı _sesler.json'dan her adımın rehberi. */
+function rehberleriOku(slug: string): Record<string, Rehber> {
+  const dosya = path.join(process.cwd(), "public", "ses", slug, "_sesler.json");
+  if (!fs.existsSync(dosya)) return {};
+  const ayar = JSON.parse(fs.readFileSync(path.join(process.cwd(), "content", "ayarlar.json"), "utf8")) as {
+    tts?: { anlaticilar?: Record<string, { ad?: string }> };
+  };
+  const adlar = ayar.tts?.anlaticilar ?? {};
+  const sesler = JSON.parse(fs.readFileSync(dosya, "utf8")) as Record<string, "kadin" | "erkek">;
+  return Object.fromEntries(
+    Object.entries(sesler).map(([id, tur]) => [id, { tur, ad: adlar[tur]?.ad ?? "Rehber" }]),
+  );
+}
+
 export default async function Sayfa({ params }: Props) {
   const { ulke: slug } = await params;
   const u = ulkeYukle(slug);
@@ -55,6 +69,7 @@ export default async function Sayfa({ params }: Props) {
     <UlkeSayfasi
       ulke={u}
       kelimeler={kelimeleriOku(slug, u.adimlar.map((a) => a.id))}
+      rehberler={rehberleriOku(slug)}
       sira={i + 1}
       toplam={tumu.length}
       bayrak={bu.bayrak}
