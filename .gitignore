@@ -12,3 +12,6 @@ tools/_dene.py
 
 # Kapak fotoğrafında öğrencinin tam adı var, depoya girmesin
 raw/kapak.jpg
+
+# npm run qr çıktısı
+qr/

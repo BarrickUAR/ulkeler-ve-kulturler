@@ -6,7 +6,12 @@ import s from "./dunya.module.css";
 export default function DunyaRotasi({ kitap }: { kitap: Kitap }) {
   const yollar = new Map(dunyaYollari().map((u) => [u.id, u.d]));
   const tr = nokta(kitap.baslangic.konum);
-  const duraklar = kitap.sayfalar.map((p) => ({ ...p, xy: nokta(p.konum) }));
+  // Kenardaki ülkelerin (Fiji, 178°D) rozeti haritadan taşmasın: telefonda büyüyen rozete yer bırak
+  const KENAR = 26;
+  const duraklar = kitap.sayfalar.map((p) => {
+    const [x, y] = nokta(p.konum);
+    return { ...p, xy: [Math.min(Math.max(x, KENAR), HARITA_G - KENAR), Math.min(Math.max(y, KENAR), HARITA_Y - KENAR)] as [number, number] };
+  });
   const rota = ucusYolu([tr, ...duraklar.map((d) => d.xy), tr]);
 
   return (
@@ -35,13 +40,7 @@ export default function DunyaRotasi({ kitap }: { kitap: Kitap }) {
         <g className={s.ucak}>
           <g>
             <g className={s.ucakGovde}>
-            <path
-              d="M-14,-2 L4,-2 L12,-9 L16,-9 L11,-2 L17,-2 Q21,0 17,2 L11,2 L16,9 L12,9 L4,2 L-14,2 L-18,-6 L-15,-6 L-10,-2 Z"
-              fill="#ffffff"
-              stroke="#17295c"
-              strokeWidth="1.8"
-              strokeLinejoin="round"
-            />
+              <UstenUcak />
             </g>
             <animateMotion dur="48s" repeatCount="indefinite" rotate="auto">
               <mpath href="#ucus-rotasi" />
@@ -75,6 +74,44 @@ export default function DunyaRotasi({ kitap }: { kitap: Kitap }) {
         })}
       </svg>
     </div>
+  );
+}
+
+/**
+ * Uçuş ekranındaki çizgi film uçağının üstten görünüşü (burnu +x yönünde).
+ * Simetrik olduğu için rota sola dönünce ters görünmez. Gölge, dönmeyen .ucak katmanında (CSS).
+ */
+function UstenUcak() {
+  const kanat = "M3,-3.5 L-5,-21 L0.5,-22 L13,-3.5 Z";
+  const kuyruk = "M-14,-2.5 L-20,-10.5 L-16.5,-11 L-9,-2.5 Z";
+  const govde = "M-20,0 C-20,-3 -15,-4.6 -9,-4.6 L10,-4.6 C17,-4.6 22,-2.4 23.5,0 C22,2.4 17,4.6 10,4.6 L-9,4.6 C-15,4.6 -20,3 -20,0 Z";
+  return (
+    <g strokeLinejoin="round" strokeLinecap="round">
+      <g stroke="#17295c" strokeWidth="1.6">
+        <path d={kanat} fill="#ffcd2e" />
+        <path d={kanat} transform="scale(1,-1)" fill="#ffcd2e" />
+        {/* motorlar */}
+        <rect x="-1" y="-15" width="8" height="4" rx="2" fill="#c9d7ef" />
+        <rect x="-1" y="11" width="8" height="4" rx="2" fill="#c9d7ef" />
+        <path d={kuyruk} fill="#e2403b" />
+        <path d={kuyruk} transform="scale(1,-1)" fill="#e2403b" />
+        <path d={govde} fill="#ffffff" />
+        {/* kokpit camı */}
+        <path d="M14,-2.6 C17.5,-2.2 20,-1.2 21,0 C20,1.2 17.5,2.2 14,2.6 C13,1 13,-1 14,-2.6 Z" fill="#86c9f0" strokeWidth="1.2" />
+      </g>
+      {/* gövde şeridi ve pencereler */}
+      <path d="M-15,0 H9" stroke="#e2403b" strokeWidth="1.6" />
+      <g fill="#86c9f0">
+        <circle cx="-8" cy="-2.4" r="0.9" />
+        <circle cx="-4" cy="-2.4" r="0.9" />
+        <circle cx="0" cy="-2.4" r="0.9" />
+        <circle cx="4" cy="-2.4" r="0.9" />
+        <circle cx="-8" cy="2.4" r="0.9" />
+        <circle cx="-4" cy="2.4" r="0.9" />
+        <circle cx="0" cy="2.4" r="0.9" />
+        <circle cx="4" cy="2.4" r="0.9" />
+      </g>
+    </g>
   );
 }
 
