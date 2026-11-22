@@ -364,11 +364,77 @@
 .alt {
   background: var(--lacivert);
   color: #c9d4f2;
-  padding-block: 18px calc(22px + env(safe-area-inset-bottom, 0px));
+  padding-block: 44px calc(40px + env(safe-area-inset-bottom, 0px));
   font-weight: 600;
 }
 .alt p {
   margin: 0;
+}
+
+/* Hazırlayanın bant ile yapıştırılmış kâğıt kartı */
+.imzaKart {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 26px 34px 22px;
+  background: var(--paper);
+  color: var(--lacivert);
+  border: 3px solid var(--sari);
+  border-radius: 18px;
+  box-shadow: 6px 6px 0 var(--sari-koyu);
+  text-align: center;
+  rotate: -1.5deg;
+}
+.imzaBant {
+  top: -14px;
+  left: 50%;
+  translate: -50% 0;
+  rotate: 3deg;
+}
+.imzaEtiket {
+  font-family: var(--font-cizgi);
+  font-size: var(--t-kucuk);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--graphite-soft);
+}
+.imzaAd {
+  margin-top: 2px !important;
+  font-family: var(--font-kapak);
+  font-size: clamp(1.9rem, 7vw, 2.6rem);
+  line-height: 1.15;
+  color: var(--lacivert);
+}
+.imzaBilgi {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 14px 0 0;
+}
+.imzaBilgi div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 14px 5px;
+  background: #ffffff;
+  border: 2px solid var(--lacivert);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--lacivert);
+}
+.imzaBilgi dt {
+  font-family: var(--font-cizgi);
+  font-size: var(--t-kucuk);
+  font-weight: 700;
+  color: var(--graphite-soft);
+}
+.imzaBilgi dd {
+  margin: 0;
+  font-family: var(--font-cizgi);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--kirmizi);
 }
 
 @media (min-width: 900px) {

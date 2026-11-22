@@ -124,7 +124,31 @@ export default function Kitapcik() {
       </section>
 
       <footer className={s.alt}>
-        <div className={s.ic}>{k.hazirlayan && <p>Hazırlayan: {k.hazirlayan}</p>}</div>
+        <div className={s.ic}>
+          {k.hazirlayan && (
+            <div className={s.imzaKart}>
+              <span className={`${s.bantKagit} ${s.imzaBant}`} aria-hidden="true" />
+              <p className={s.imzaEtiket}>Bu kitapçığı hazırlayan</p>
+              <p className={s.imzaAd}>{k.hazirlayan}</p>
+              {(k.sinif || k.okulNo) && (
+                <dl className={s.imzaBilgi}>
+                  {k.sinif && (
+                    <div>
+                      <dt>Sınıf</dt>
+                      <dd>{k.sinif}</dd>
+                    </div>
+                  )}
+                  {k.okulNo && (
+                    <div>
+                      <dt>Okul No</dt>
+                      <dd>{k.okulNo}</dd>
+                    </div>
+                  )}
+                </dl>
+              )}
+            </div>
+          )}
+        </div>
       </footer>
     </div>
   );

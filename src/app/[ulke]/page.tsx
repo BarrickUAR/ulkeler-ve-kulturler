@@ -77,7 +77,7 @@ export default async function Sayfa({ params }: Props) {
       onceki={komsu(-1)}
       sonraki={komsu(1)}
       digerleri={tumu.filter((s) => s.hazir).map(({ slug, ad }) => ({ slug, ad }))}
-      hazirlayan={k.hazirlayan}
+      hazirlayan={[k.hazirlayan, k.sinif, k.okulNo && `No: ${k.okulNo}`].filter(Boolean).join(" · ")}
       baglantiHazir={!!u.baglanti && tumu.some((s) => s.slug === u.baglanti!.slug && s.hazir)}
     />
   );

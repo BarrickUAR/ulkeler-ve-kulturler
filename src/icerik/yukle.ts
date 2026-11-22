@@ -27,6 +27,9 @@ export type KitapSayfasi = {
 export type Kitap = {
   baslik: string;
   hazirlayan: string;
+  /** Hazırlayan öğrencinin okul numarası ve sınıfı (ayarlar.json). */
+  okulNo: string;
+  sinif: string;
   baslangic: { ad: string; iso: string; bayrak: string; konum: Konum };
   sayfalar: KitapSayfasi[];
 };
@@ -36,13 +39,15 @@ function okuJson<T>(dosya: string): T {
 }
 
 export function kitap(): Kitap {
-  const k = okuJson<Omit<Kitap, "hazirlayan" | "sayfalar"> & { sayfalar: Omit<KitapSayfasi, "hazir" | "renk" | "posterVar">[] }>(
+  const k = okuJson<Omit<Kitap, "hazirlayan" | "okulNo" | "sinif" | "sayfalar"> & { sayfalar: Omit<KitapSayfasi, "hazir" | "renk" | "posterVar">[] }>(
     path.join(CONTENT, "kitap.json"),
   );
-  const ayar = okuJson<{ hazirlayan?: string }>(path.join(CONTENT, "ayarlar.json"));
+  const ayar = okuJson<{ hazirlayan?: string; okulNo?: string; sinif?: string }>(path.join(CONTENT, "ayarlar.json"));
   return {
     baslik: k.baslik,
     hazirlayan: ayar.hazirlayan ?? "",
+    okulNo: ayar.okulNo ?? "",
+    sinif: ayar.sinif ?? "",
     baslangic: k.baslangic,
     sayfalar: k.sayfalar.map((s) => {
       const posterBilgi = path.join(CONTENT, s.slug, "_poster.json");
