@@ -8,11 +8,22 @@ export default function DunyaRotasi({ kitap }: { kitap: Kitap }) {
   const tr = nokta(kitap.baslangic.konum);
   // Kenardaki ülkelerin (Fiji, 178°D) rozeti haritadan taşmasın: telefonda büyüyen rozete yer bırak
   const KENAR = 26;
-  const duraklar = kitap.sayfalar.map((p) => {
-    const [x, y] = nokta(p.konum);
-    return { ...p, xy: [Math.min(Math.max(x, KENAR), HARITA_G - KENAR), Math.min(Math.max(y, KENAR), HARITA_Y - KENAR)] as [number, number] };
-  });
+  const sayfalar = kitap.sayfalar.map((p, i) => ({ ...p, no: i + 1 }));
+  // Türkiye'nin kendi sayfası varsa ayrı durak çizilmez: başlangıç rozeti o sayfaya gider (tur evde biter)
+  const ev = sayfalar.find((p) => p.iso === kitap.baslangic.iso);
+  const duraklar = sayfalar
+    .filter((p) => p !== ev)
+    .map((p) => {
+      const [x, y] = nokta(p.konum);
+      return { ...p, xy: [Math.min(Math.max(x, KENAR), HARITA_G - KENAR), Math.min(Math.max(y, KENAR), HARITA_Y - KENAR)] as [number, number] };
+    });
   const rota = ucusYolu([tr, ...duraklar.map((d) => d.xy), tr]);
+  const baslangic = (
+    <g transform={`translate(${tr[0]},${tr[1]})`} className={ev ? s.durak : undefined}>
+      <Rozet bayrak={kitap.baslangic.bayrak} />
+      <Etiket metin={ev ? `Başlangıç ve ${ev.no}. durak` : "Buradan başlıyoruz!"} dx={ev ? 74 : 0} dy={34} renk="#e2403b" />
+    </g>
+  );
 
   return (
     <div className={s.harita}>
@@ -49,17 +60,20 @@ export default function DunyaRotasi({ kitap }: { kitap: Kitap }) {
         </g>
 
         {/* Başlangıç */}
-        <g transform={`translate(${tr[0]},${tr[1]})`}>
-          <Rozet bayrak={kitap.baslangic.bayrak} />
-          <Etiket metin="Buradan başlıyoruz!" dx={0} dy={34} renk="#e2403b" />
-        </g>
+        {ev?.hazir ? (
+          <a href={`/${ev.slug}`} aria-label={`${ev.ad} sayfasına git`}>
+            {baslangic}
+          </a>
+        ) : (
+          baslangic
+        )}
 
-        {duraklar.map((d, i) => {
+        {duraklar.map((d) => {
           const icerik = (
             <g transform={`translate(${d.xy[0]},${d.xy[1]})`} className={s.durak}>
               <line x1="0" y1="0" x2={d.etiket[0] * 0.75} y2={d.etiket[1] * 0.75} stroke="#17295c" strokeWidth="1.6" className={s.cizgi} />
               <Rozet bayrak={d.bayrak} />
-              <Etiket metin={`${i + 1}. ${d.kisa}`} dx={d.etiket[0]} dy={d.etiket[1]} renk={d.hazir ? "#17295c" : "#5d6a8c"} />
+              <Etiket metin={`${d.no}. ${d.kisa}`} dx={d.etiket[0]} dy={d.etiket[1]} renk={d.hazir ? "#17295c" : "#5d6a8c"} />
             </g>
           );
           return d.hazir ? (
@@ -126,7 +140,7 @@ function Rozet({ bayrak }: { bayrak: string }) {
 }
 
 function Etiket({ metin, dx, dy, renk }: { metin: string; dx: number; dy: number; renk: string }) {
-  const gen = metin.length * 8.6 + 18;
+  const gen = metin.length * 8.9 + 18;
   return (
     <g transform={`translate(${dx},${dy})`} className={s.etiket}>
       <rect x={-gen / 2} y="-13" width={gen} height="26" rx="13" fill="#ffffff" stroke={renk} strokeWidth="2.2" />

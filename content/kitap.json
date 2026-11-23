@@ -56,8 +56,8 @@
         53.5
       ],
       "etiket": [
-        -72,
-        -38
+        -112,
+        -6
       ],
       "gidis": "Birleşik Krallık'a"
     },
@@ -91,7 +91,7 @@
       ],
       "etiket": [
         0,
-        -34
+        36
       ],
       "gidis": "Çin'e"
     },
@@ -124,8 +124,8 @@
         46.5
       ],
       "etiket": [
-        -64,
-        28
+        -104,
+        22
       ],
       "gidis": "Fransa'ya"
     },
@@ -162,6 +162,193 @@
         26
       ],
       "gidis": "Güney Kore'ye"
+    },
+    {
+      "slug": "isvicre",
+      "ad": "İsviçre",
+      "kisa": "İsviçre",
+      "iso": "756",
+      "bayrak": "ch",
+      "baskent": "Bern",
+      "konum": [
+        8.2,
+        46.8
+      ],
+      "etiket": [
+        -78,
+        56
+      ],
+      "gidis": "İsviçre'ye"
+    },
+    {
+      "slug": "italya",
+      "ad": "İtalya",
+      "kisa": "İtalya",
+      "iso": "380",
+      "bayrak": "it",
+      "baskent": "Roma",
+      "konum": [
+        12.8,
+        42.8
+      ],
+      "etiket": [
+        -6,
+        84
+      ],
+      "gidis": "İtalya'ya"
+    },
+    {
+      "slug": "izlanda",
+      "ad": "İzlanda",
+      "kisa": "İzlanda",
+      "iso": "352",
+      "bayrak": "is",
+      "baskent": "Reykjavik",
+      "konum": [
+        -18.5,
+        64.9
+      ],
+      "etiket": [
+        0,
+        -34
+      ],
+      "gidis": "İzlanda'ya"
+    },
+    {
+      "slug": "japonya",
+      "ad": "Japonya",
+      "kisa": "Japonya",
+      "iso": "392",
+      "bayrak": "jp",
+      "baskent": "Tokyo",
+      "konum": [
+        138.5,
+        36.5
+      ],
+      "etiket": [
+        46,
+        -22
+      ],
+      "gidis": "Japonya'ya"
+    },
+    {
+      "slug": "kanada",
+      "ad": "Kanada",
+      "kisa": "Kanada",
+      "iso": "124",
+      "bayrak": "ca",
+      "baskent": "Ottawa",
+      "konum": [
+        -100,
+        58
+      ],
+      "etiket": [
+        0,
+        -34
+      ],
+      "gidis": "Kanada'ya"
+    },
+    {
+      "slug": "kuba",
+      "ad": "Küba",
+      "kisa": "Küba",
+      "iso": "192",
+      "bayrak": "cu",
+      "baskent": "Havana",
+      "konum": [
+        -79.5,
+        21.8
+      ],
+      "etiket": [
+        34,
+        30
+      ],
+      "gidis": "Küba'ya"
+    },
+    {
+      "slug": "meksika",
+      "ad": "Meksika",
+      "kisa": "Meksika",
+      "iso": "484",
+      "bayrak": "mx",
+      "baskent": "Mexico City",
+      "konum": [
+        -102,
+        23.5
+      ],
+      "etiket": [
+        -50,
+        30
+      ],
+      "gidis": "Meksika'ya"
+    },
+    {
+      "slug": "mogolistan",
+      "ad": "Moğolistan",
+      "kisa": "Moğolistan",
+      "iso": "496",
+      "bayrak": "mn",
+      "baskent": "Ulanbator",
+      "konum": [
+        103.8,
+        46.8
+      ],
+      "etiket": [
+        -84,
+        8
+      ],
+      "gidis": "Moğolistan'a"
+    },
+    {
+      "slug": "papua-yeni-gine",
+      "ad": "Papua Yeni Gine",
+      "kisa": "Papua Y. Gine",
+      "iso": "598",
+      "bayrak": "pg",
+      "baskent": "Port Moresby",
+      "konum": [
+        145,
+        -6.5
+      ],
+      "etiket": [
+        0,
+        32
+      ],
+      "gidis": "Papua Yeni Gine'ye"
+    },
+    {
+      "slug": "rusya",
+      "ad": "Rusya",
+      "kisa": "Rusya",
+      "iso": "643",
+      "bayrak": "ru",
+      "baskent": "Moskova",
+      "konum": [
+        95,
+        61
+      ],
+      "etiket": [
+        0,
+        -34
+      ],
+      "gidis": "Rusya'ya"
+    },
+    {
+      "slug": "turkiye",
+      "ad": "Türkiye",
+      "kisa": "Türkiye",
+      "iso": "792",
+      "bayrak": "tr",
+      "baskent": "Ankara",
+      "konum": [
+        35,
+        39
+      ],
+      "etiket": [
+        0,
+        -34
+      ],
+      "gidis": "Türkiye'ye"
     }
   ]
 }

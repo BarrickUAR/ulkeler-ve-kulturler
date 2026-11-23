@@ -1,0 +1,15 @@
+{
+ "01-giris": "erkek",
+ "02-sanat": "erkek",
+ "03-sehirler": "erkek",
+ "04-lezzet": "erkek",
+ "05-kolezyum": "kadin",
+ "06-pisa": "erkek",
+ "07-pizza": "kadin",
+ "08-venedik": "erkek",
+ "09-dukler": "kadin",
+ "10-floransa": "erkek",
+ "11-etna": "kadin",
+ "12-vespa": "erkek",
+ "13-biliyor": "kadin"
+}
