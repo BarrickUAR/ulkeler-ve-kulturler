@@ -164,6 +164,23 @@
       "gidis": "Güney Kore'ye"
     },
     {
+      "slug": "hindistan",
+      "ad": "Hindistan",
+      "kisa": "Hindistan",
+      "iso": "356",
+      "bayrak": "in",
+      "baskent": "Yeni Delhi",
+      "konum": [
+        79,
+        22
+      ],
+      "etiket": [
+        -20,
+        36
+      ],
+      "gidis": "Hindistan'a"
+    },
+    {
       "slug": "isvicre",
       "ad": "İsviçre",
       "kisa": "İsviçre",
