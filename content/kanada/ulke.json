@@ -22,7 +22,7 @@
     { "id": "niagara", "etiket": "Niagara Şelaleleri", "kutu": { "x": 0.43, "y": 0.52, "w": 0.23, "h": 0.17 } },
     { "id": "parlamento", "etiket": "Parlamento Binası", "kutu": { "x": 0.67, "y": 0.54, "w": 0.31, "h": 0.28 } },
     { "id": "inuit", "etiket": "Geleneksel Kıyafet (İnuit)", "kutu": { "x": 0.41, "y": 0.63, "w": 0.12, "h": 0.36 }, "kesik": { "x": 0.42, "y": 0.64, "w": 0.1, "h": 0.3 }, "efekt": { "tip": "salla", "merkez": [0.5, 0.95] } },
-    {"id": "ayi", "etiket": "Kutup Ayısı", "kutu": {"x": 0.53, "y": 0.7, "w": 0.2, "h": 0.28}}
+    {"id": "ayi", "etiket": "Kutup Ayısı", "kutu": {"x": 0.53, "y": 0.7, "w": 0.2, "h": 0.28}, "kesik": {"x": 0.53, "y": 0.71, "w": 0.2, "h": 0.19}, "_yontem": "grabcut", "efekt": {"tip": "salla", "merkez": [0.5, 0.95]}}
   ],
   "adimlar": [
     { "id": "01-giris", "odak": "tum", "bolum": "kimlik",
@@ -51,7 +51,7 @@
       "metin": "Poutine, patates kızartmasının üstüne peynir ve sos dökülerek yapılır; Nanaimo bar ise katlı bir tatlıdır.",
       "okunus": "Putin, patates kızartmasının üstüne peynir ve sos dökülerek yapılır; Nanaymo bar ise katlı bir tatlıdır.",
       "ara": [{ "kelime": "Nanaymo", "odak": "nanaimo", "efektler": ["nanaimo"] }] },
-    { "id": "11-kuzey", "odak": "ayi",
+    { "id": "11-kuzey", "odak": "ayi", "efektler": ["ayi"],
       "metin": "Buzlu kuzeyde kutup ayıları ve kalın kürklü kıyafetler giyen İnuit halkı yaşar.",
       "ara": [{ "kelime": "kalın", "odak": "inuit", "efektler": ["inuit"] }] },
     { "id": "12-ottawa", "odak": "parlamento",

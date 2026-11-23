@@ -16,7 +16,7 @@
     { "id": "ger", "etiket": "Ger (Göçebe Çadırı)", "kutu": { "x": 0.57, "y": 0.07, "w": 0.18, "h": 0.27 }, "kesik": { "x": 0.58, "y": 0.17, "w": 0.16, "h": 0.16 }, "efekt": { "tip": "belir" } },
     { "id": "orhun", "etiket": "Orhun Yazıtları", "kutu": { "x": 0.8, "y": 0.09, "w": 0.13, "h": 0.28 }, "kesik": { "x": 0.815, "y": 0.16, "w": 0.1, "h": 0.2 }, "efekt": { "tip": "belir" } },
     { "id": "deel", "etiket": "Geleneksel Kıyafet (Deel)", "kutu": { "x": 0.09, "y": 0.37, "w": 0.17, "h": 0.32 }, "kesik": { "x": 0.105, "y": 0.38, "w": 0.14, "h": 0.3 }, "efekt": { "tip": "salla", "merkez": [0.5, 0.95] } },
-    {"id": "okculuk", "etiket": "Atlı Okçuluk", "kutu": {"x": 0.25, "y": 0.34, "w": 0.19, "h": 0.27}, "kesik": {"x": 0.255, "y": 0.35, "w": 0.17, "h": 0.25}, "efekt": {"tip": "zipla", "tekrar": 2}, "_esik": 9},
+    {"id": "okculuk", "etiket": "Atlı Okçuluk", "kutu": {"x": 0.25, "y": 0.34, "w": 0.19, "h": 0.27}, "kesik": {"x": 0.25, "y": 0.34, "w": 0.18, "h": 0.27}, "efekt": {"tip": "zipla", "tekrar": 2}, "_yontem": "grabcut"},
     { "id": "bayrak", "etiket": "Bayrak", "kutu": { "x": 0.45, "y": 0.4, "w": 0.15, "h": 0.13 } },
     { "id": "dashchoilin", "etiket": "Dashchoilin Manastırı", "kutu": { "x": 0.62, "y": 0.36, "w": 0.33, "h": 0.3 } },
     {"id": "cizme", "etiket": "Geleneksel Çizme (Gutal)", "kutu": {"x": 0.16, "y": 0.69, "w": 0.13, "h": 0.25}, "kesik": {"x": 0.15, "y": 0.68, "w": 0.14, "h": 0.27}, "efekt": {"tip": "zipla"}},

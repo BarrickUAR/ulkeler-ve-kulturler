@@ -54,7 +54,16 @@ def kes(slug: str, debug: bool) -> None:
         x1, y1 = min(W, int((k["x"] + k["w"]) * W)), min(H, int((k["y"] + k["h"]) * H))
         parca = poster[y0:y1, x0:x1]
         lab = cv2.cvtColor(parca, cv2.COLOR_BGR2LAB)
-        arka = arka_plan_maskesi(lab, esik=oge.get("_esik", 16.0))
+        if oge.get("_yontem") == "grabcut":
+            # Nesne zeminle aynı renkteyse (beyaz ayı krem karada) renk eşiği yetmez: GrabCut, kesik kutusunun
+            # kenar payını kesin arka plan, içini olası nesne sayar. Kesik kutusu nesnenin çevresinde pay bırakmalı.
+            pay = max(4, int(min(parca.shape[:2]) * 0.04))
+            gc = np.zeros(parca.shape[:2], np.uint8)
+            bg, fg = np.zeros((1, 65), np.float64), np.zeros((1, 65), np.float64)
+            cv2.grabCut(parca, gc, (pay, pay, parca.shape[1] - 2 * pay, parca.shape[0] - 2 * pay), bg, fg, 8, cv2.GC_INIT_WITH_RECT)
+            arka = np.where((gc == cv2.GC_BGD) | (gc == cv2.GC_PR_BGD), 255, 0).astype(np.uint8)
+        else:
+            arka = arka_plan_maskesi(lab, esik=oge.get("_esik", 16.0))
         nesne = cv2.bitwise_not(arka)
         nesne = cv2.morphologyEx(nesne, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
         nesne = cv2.morphologyEx(nesne, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
